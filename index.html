@@ -1,317 +1,73 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ONU Provisioning System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <title>Provisionar ONU</title>
     <style>
-        .terminal {
-            background-color: #0f172a;
-            font-family: 'Courier New', monospace;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background: #f5f5f5;
         }
-        .command-line {
-            color: #38bdf8;
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ccc;
         }
-        .terminal-output {
-            color: #e2e8f0;
+        textarea {
+            width: 100%;
+            height: 300px;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 14px;
+            background: #222;
+            color: #0f0;
+            padding: 1rem;
+            border-radius: 5px;
+            border: none;
+            resize: vertical;
         }
-        .blinking-cursor {
-            animation: blink 1s infinite;
+        input[type="text"] {
+            width: 100%;
+            padding: 0.7rem;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #aaa;
         }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        button {
+            margin-top: 1rem;
+            padding: 0.7rem 1.2rem;
+            font-size: 1rem;
+            border: none;
+            background: #28a745;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        .gradient-bg {
-            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+        button:hover {
+            background: #218838;
+        }
+        label {
+            font-weight: bold;
         }
     </style>
 </head>
-<body class="gradient-bg min-h-screen text-gray-100">
-    <div class="container mx-auto px-4 py-8">
-        
-        <header class="flex justify-between items-center mb-8">
-            <div class="flex items-center">
-                <i class="fas fa-network-wired text-3xl text-blue-400 mr-3"></i>
-                <h1 class="text-2xl font-bold">ONU<span class="text-blue-400">Provision</span></h1>
-            </div>
-            <div class="flex items-center space-x-4">
-                <div class="bg-blue-900/50 px-4 py-2 rounded-lg flex items-center">
-                    <i class="fas fa-user-circle mr-2 text-blue-300"></i>
-                    <span>Admin</span>
-                </div>
-                <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </div>
-        </header>
+<body>
+    <div class="container">
+        <h1>Provisionar ONU</h1>
+        <form method="POST">
+            <label for="nome_cliente">Nome do Cliente:</label>
+            <input type="text" id="nome_cliente" name="nome_cliente" required />
+            <button type="submit">Provisionar</button>
+        </form>
 
-       
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <div class="lg:col-span-1 bg-slate-800/50 rounded-xl p-6 shadow-lg">
-                <h2 class="text-xl font-semibold mb-4 flex items-center">
-                    <i class="fas fa-magic mr-2 text-blue-400"></i> Provisionamento Automático
-                </h2>
-                
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Nome do Cliente</label>
-                        <input type="text" id="clientName" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Número da ONU</label>
-                        <input type="text" id="onuNumber" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div class="pt-2">
-                        <button id="provisionBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition flex items-center justify-center">
-                            <i class="fas fa-bolt mr-2"></i> Provisionar ONU
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="mt-6 pt-4 border-t border-slate-700">
-                    <h3 class="font-medium mb-2 flex items-center">
-                        <i class="fas fa-history mr-2 text-blue-400"></i> Últimas ONUs provisionadas
-                    </h3>
-                    <div class="space-y-2 max-h-40 overflow-y-auto">
-                        <div class="bg-slate-700/50 p-2 rounded-lg text-sm">
-                            <div class="flex justify-between">
-                                <span>ONU-784512</span>
-                                <span class="text-green-400">Concluído</span>
-                            </div>
-                            <div class="text-xs text-slate-400">João Silva - 10/06/2025</div>
-                        </div>
-                        <div class="bg-slate-700/50 p-2 rounded-lg text-sm">
-                            <div class="flex justify-between">
-                                <span>ONU-784511</span>
-                                <span class="text-green-400">Concluído</span>
-                            </div>
-                            <div class="text-xs text-slate-400">Maria Souza - 10/06/2025</div>
-                        </div>
-                        <div class="bg-slate-700/50 p-2 rounded-lg text-sm">
-                            <div class="flex justify-between">
-                                <span>ONU-784510</span>
-                                <span class="text-green-400">Concluído</span>
-                            </div>
-                            <div class="text-xs text-slate-400">Carlos Oliveira - 09/06/2025</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            
-            <div class="lg:col-span-2">
-                <div class="terminal rounded-xl overflow-hidden shadow-lg h-full">
-                    <div class="bg-slate-900 px-4 py-2 flex items-center">
-                        <div class="flex space-x-2 mr-4">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        </div>
-                        <div class="text-sm">terminal@onuprovision:~</div>
-                    </div>
-                    <div class="p-4 h-96 overflow-y-auto" id="terminalOutput">
-                        <div class="terminal-output mb-2">
-                            <span class="text-green-400">usuario@onuprovision:~$</span> Bem-vindo ao sistema de provisionamento automático de ONUs
-                        </div>
-                        <div class="terminal-output mb-2">
-                            Digite <span class="text-blue-400">'help'</span> para ver os comandos disponíveis
-                        </div>
-                        <div class="terminal-output mb-4">
-                            Sistema pronto para provisionamento...
-                        </div>
-                        <div class="terminal-output mb-2">
-                            <span class="text-green-400">usuario@onuprovision:~$</span> <span class="command-line">status</span>
-                        </div>
-                        <div class="terminal-output mb-4">
-                            <div>> Serviço OLT: <span class="text-green-400">online</span></div>
-                            <div>> Conexão com banco de dados: <span class="text-green-400">ativo</span></div>
-                            <div>> Último provisionamento: ONU-784512 (10/06/2025 14:32)</div>
-                        </div>
-                        <div id="commandOutput"></div>
-                        <div class="flex items-center" id="commandInput">
-                            <span class="text-green-400 mr-2">usuario@onuprovision:~$</span>
-                            <span id="typedCommand" class="command-line"></span>
-                            <span class="blinking-cursor">|</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        
-        <div class="mt-6 bg-slate-800/50 rounded-lg px-4 py-2 flex flex-wrap items-center justify-between text-sm">
-            <div class="flex items-center mr-4">
-                <div class="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
-                <span>Sistema operacional</span>
-            </div>
-            <div class="flex items-center mr-4">
-                <i class="fas fa-server text-blue-400 mr-2"></i>
-                <span>OLT-Master-01</span>
-            </div>
-            <div class="flex items-center mr-4">
-                <i class="fas fa-database text-blue-400 mr-2"></i>
-                <span>  PENIS VERSION 8.0</span>
-            </div>
-            <div class="flex items-center">
-                <i class="fas fa-clock text-blue-400 mr-2"></i>
-                <span id="currentTime">Carregando...</span>
-            </div>
-        </div>
+        {% if resultado %}
+        <textarea readonly>{{ resultado }}</textarea>
+        {% endif %}
     </div>
-
-    <script>
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            const dateString = now.toLocaleDateString();
-            document.getElementById('currentTime').textContent = `${dateString} ${timeString}`;
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
-
-        const provisionBtn = document.getElementById('provisionBtn');
-        const clientNameInput = document.getElementById('clientName');
-        const onuNumberInput = document.getElementById('onuNumber');
-        const terminalOutput = document.getElementById('terminalOutput');
-        const commandOutput = document.getElementById('commandOutput');
-        const typedCommand = document.getElementById('typedCommand');
-
-        function addTerminalLine(text, isCommand = false) {
-            const line = document.createElement('div');
-            line.className = 'terminal-output mb-2';
-            
-            if (isCommand) {
-                line.innerHTML = `<span class="text-green-400">usuario@onuprovision:~$</span> <span class="command-line">${text}</span>`;
-            } else {
-                line.textContent = text;
-            }
-            
-            terminalOutput.insertBefore(line, document.getElementById('commandInput'));
-            terminalOutput.scrollTop = terminalOutput.scrollHeight;
-        }
-
-        function simulateTyping(text, callback) {
-            let i = 0;
-            typedCommand.textContent = '';
-            
-            const typingInterval = setInterval(() => {
-                if (i < text.length) {
-                    typedCommand.textContent += text.charAt(i);
-                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
-                    i++;
-                } else {
-                    clearInterval(typingInterval);
-                    if (callback) callback();
-                }
-            }, 50);
-        }
-
-        function simulateProvisioning(clientName, onuNumber) {
-            addTerminalLine(`provision --client "${clientName}" --onu ${onuNumber}`, true);
-            
-            simulateTyping(`provision --client "${clientName}" --onu ${onuNumber}`, () => {
-                setTimeout(() => {
-                    commandOutput.innerHTML = `
-                        <div class="terminal-output mb-2">
-                            > Iniciando provisionamento para ${clientName} (ONU ${onuNumber})...
-                        </div>
-                    `;
-                    
-                    const steps = [
-                        {text: "> Conectando à OLT...", delay: 800},
-                        {text: "> Verificando porta disponível...", delay: 1000},
-                        {text: "> Configurando VLAN...", delay: 1200},
-                        {text: "> Aplicando perfil de serviço...", delay: 800},
-                        {text: "> Ativando ONU...", delay: 1500},
-                        {text: `> ONU ${onuNumber} provisionada com sucesso para ${clientName}!`, delay: 0, isSuccess: true}
-                    ];
-                    
-                    let totalDelay = 0;
-                    steps.forEach(step => {
-                        totalDelay += step.delay;
-                        setTimeout(() => {
-                            const stepElement = document.createElement('div');
-                            stepElement.className = 'terminal-output mb-1';
-                            stepElement.textContent = step.text;
-                            if (step.isSuccess) {
-                                stepElement.className += ' text-green-400';
-                            }
-                            commandOutput.appendChild(stepElement);
-                            terminalOutput.scrollTop = terminalOutput.scrollHeight;
-                            
-                            if (step.isSuccess) {
-                                // Add to recent provisions
-                                const recentList = document.querySelector('.border-t.border-slate-700').nextElementSibling;
-                                const newItem = document.createElement('div');
-                                newItem.className = 'bg-slate-700/50 p-2 rounded-lg text-sm';
-                                newItem.innerHTML = `
-                                    <div class="flex justify-between">
-                                        <span>ONU-${onuNumber}</span>
-                                        <span class="text-green-400">Concluído</span>
-                                    </div>
-                                    <div class="text-xs text-slate-400">${clientName} - ${new Date().toLocaleDateString()}</div>
-                                `;
-                                recentList.insertBefore(newItem, recentList.firstChild);
-                                
-                                // Keep only 3 items
-                                if (recentList.children.length > 3) {
-                                    recentList.removeChild(recentList.lastChild);
-                                }
-                            }
-                        }, totalDelay);
-                    });
-                    
-                    // Clear command after completion
-                    setTimeout(() => {
-                        typedCommand.textContent = '';
-                    }, totalDelay + 500);
-                }, 500);
-            });
-        }
-
-        provisionBtn.addEventListener('click', () => {
-            const clientName = clientNameInput.value.trim();
-            const onuNumber = onuNumberInput.value.trim();
-            
-            if (!clientName || !onuNumber) {
-                addTerminalLine("Erro: Nome do cliente e número da ONU são obrigatórios", true);
-                return;
-            }
-            
-            simulateProvisioning(clientName, onuNumber);
-            
-            // Clear inputs
-            clientNameInput.value = '';
-            onuNumberInput.value = '';
-        });
-
-        setTimeout(() => {
-            addTerminalLine("help", true);
-            commandOutput.innerHTML = `
-                <div class="terminal-output mb-2">
-                    Comandos disponíveis:
-                </div>
-                <div class="terminal-output mb-1">
-                    <span class="text-blue-400">provision</span> - Inicia o provisionamento de uma ONU
-                </div>
-                <div class="terminal-output mb-1">
-                    <span class="text-blue-400">status</span> - Mostra o status do sistema
-                </div>
-                <div class="terminal-output mb-1">
-                    <span class="text-blue-400">clear</span> - Limpa o terminal
-                </div>
-                <div class="terminal-output mb-4">
-                    <span class="text-blue-400">help</span> - Mostra esta mensagem de ajuda
-                </div>
-            `;
-            typedCommand.textContent = '';
-        }, 2000);
-    </script>
 </body>
 </html>
